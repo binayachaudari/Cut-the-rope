@@ -29,39 +29,38 @@ let generateRandomNumber = (min, max) => {
 };
 
 
-let background = new Background(new Vec2(0, 0), './images/background.png');
-let nail = new Nail(new Vec2(CANVAS_WIDTH / 2 - nailImageWidth, 50), './images/pin.png');
+let background = new Background(new Vec2(0, 0));
+let nail = new Nail(new Vec2(CANVAS_WIDTH / 2 - nailImageWidth, 50));
 
 let rope = new Rope(new Vec2(CANVAS_WIDTH / 2, 50 + NailImageHeight), 15, 10);
-
-let candy = new Candy(rope.getRopeEnd(), './images/candy.png');
 
 let star1 = new Star(new Vec2(CANVAS_WIDTH / 2, 305), 0),
   star2 = new Star(new Vec2(CANVAS_WIDTH / 2, 375), 6),
   star3 = new Star(new Vec2(CANVAS_WIDTH / 2, 455), 12);
 
+let stars = [star1, star2, star3];
+
+let candy = new Candy(rope.getRopeEnd());
+
+
 function updateAll() {
   rope.updatePoints();
-  // square.updatePoints();
-  for (var i = 0; i < 5; i++) //more loops = more precision, but worse performance
+  for (var rigidConstraint = 0; rigidConstraint < 5; rigidConstraint++) //more loops = more precision, but worse performance
   {
-    // square.updateConstraints();
     rope.updateConstraints();
   }
-  // square.updateFriction();
-  // square.render(ctx);
+  for (star of stars) {
+    star.update();
+  }
   candy.update();
-  star1.update();
-  star2.update();
-  star3.update();
-
 }
 
 let drawAll = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   background.draw();
   nail.draw();
-  rope.render(ctx);
+  rope.render();
+
 }
 
 let gameLoopFrameRequest;
@@ -76,10 +75,6 @@ let gameLoop = () => {
 document.body.onload = (e) => {
   gameLoop();
 }
-
-
-
-
 
 
 
@@ -98,7 +93,6 @@ document.body.onload = (e) => {
 // }
 
 
-// canvas.addEventListener('click', (e) => {
-//   console.log(e);
-//   rope.deleteNode();
-// })
+canvas.addEventListener('click', (e) => {
+  rope.checkRopesIntersection(e.layerX, e.layerY);
+})

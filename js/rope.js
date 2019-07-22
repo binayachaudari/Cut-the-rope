@@ -1,22 +1,23 @@
 class Rope {
-  constructor(position, rope_points, line_segment_length) {
+  constructor(position, ropePoints, lineSegmentLength) {
     this.points = [];
     this.constraints = [];
     this.position = position;
-    this.rope_points = rope_points;
-    this.line_segment_length = line_segment_length;
+    this.ropePoints = ropePoints;
+    this.lineSegmentLength = lineSegmentLength;
 
-    for (var i = 0; i < rope_points; i++) {
+    for (let eachRopePoint = 0; eachRopePoint < ropePoints; eachRopePoint++) {
       this.points.push(new Point(
-        new Vec2(position.x, position.y + i * line_segment_length)
+        new Vec2(position.x, position.y + eachRopePoint * lineSegmentLength)
       ));
     }
 
-    for (var i = 0; i < rope_points - 1; i++) {
+    for (let eachRopePoint = 0; eachRopePoint < ropePoints - 1; eachRopePoint++) {
       this.constraints.push(
-        new PointConstraint(this.points[i], this.points[i + 1])
+        new PointConstraint(this.points[eachRopePoint], this.points[eachRopePoint + 1])
       );
     }
+
     this.setPinned(true);
   }
   setPinned(value) {
@@ -27,33 +28,56 @@ class Rope {
     return this.points[this.points.length - 1];
   }
   attach(point) {
-    this.constraints.push(new PointConstraint(this.getRopeEnd(), point).setLength(this.line_segment_length));
+    this.constraints.push(new PointConstraint(this.getRopeEnd(), point).setLength(this.lineSegmentLength));
   }
 
   updatePoints() {
     this.points[0].position = this.position;
-    for (var point of this.points) {
+    for (let point of this.points) {
       point.update();
     }
   }
   updateFriction() {
-    for (var point of this.points) {
+    for (let point of this.points) {
       point.updateFriction();
     }
   }
+  updateGravity() {
+    for (let point of this.points) {
+      point.setGravity(new Vec2(0, 1));
+    }
+  }
   updateConstraints() {
-    for (var constraint of this.constraints) {
+    for (let constraint of this.constraints) {
       constraint.update();
     }
   }
-  render(ctx) {
-    for (var constraint of this.constraints) {
-      constraint.render(ctx);
+  checkRopesIntersection(mousePositionX, mousePositionY) {
+    for (let constraint of this.constraints) {
+      let lengthOfLine = constraint.pointA.position.vecTo(constraint.pointB.position).len();
+      let distanceFromPointA = new Vec2(mousePositionX, mousePositionY).vecTo(constraint.pointA.position).len(),
+        distanceFromPointB = new Vec2(mousePositionX, mousePositionY).vecTo(constraint.pointB.position).len();
+
+      if (distanceFromPointA + distanceFromPointB >= lengthOfLine - 2.5 &&
+        distanceFromPointA + distanceFromPointB <= lengthOfLine + 2.5) {
+        if (this.constraints.indexOf(constraint) != 0) {
+          this.removeConstraint(this.constraints.indexOf(constraint));
+          this.removePoints(this.points.indexOf(constraint.pointA), this.points.indexOf(constraint.pointB));
+          this.updateGravity();
+        }
+      }
     }
   }
-
-  deleteNode() {
-    this.constraints.splice(5, 1);
+  removeConstraint(index) {
+    this.constraints.splice(index, 1);
   }
-
+  removePoints(pointA, pointB) {
+    this.points.splice(pointA, 1);
+    this.points.splice(pointB, 1);
+  }
+  render(ctx) {
+    for (let constraint of this.constraints) {
+      constraint.render();
+    }
+  }
 }

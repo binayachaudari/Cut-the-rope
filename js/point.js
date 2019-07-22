@@ -3,7 +3,7 @@ class Point {
     this.max_velocity = 40;
     this.pinned = false;
     this.friction = 0.6;
-    this.gravity = new Vec2(0, 0.25);
+    this.gravity = new Vec2(0, 0.2);
     this.position = position;
     this.setVelocity(velocity);
 
@@ -18,6 +18,10 @@ class Point {
   //   this.pinned = value;
   //   return this;
   // }
+
+  setGravity(value) {
+    this.gravity = value;
+  }
 
   updateFriction() {
     if (this.position.y == CANVAS_HEIGHT) {

@@ -1,9 +1,9 @@
 class Nail {
-  constructor(position, source) {
+  constructor(position) {
     this.x = position.x;
     this.y = position.y;
     this.nailImage = new Image();
-    this.nailImage.src = source;
+    this.nailImage.src = './images/pin.png';
   }
 
   draw() {

@@ -1,8 +1,8 @@
 class Candy {
-  constructor(endPoint, source) {
+  constructor(endPoint) {
     this.endPoint = endPoint;
     this.candyImage = new Image();
-    this.candyImage.src = source;
+    this.candyImage.src = './images/candy.png';
     this.candyImageWidth = this.candyImageHeight = 100;
   }
 

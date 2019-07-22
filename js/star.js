@@ -8,29 +8,33 @@ class Star {
     this.index = index;
     this.bouncingUp = true;
     this.dy = 0;
-    this.spriteWidth;
-    this.spriteHeight;
     this.numOfRows = 18;
-    this.singleSpriteHeight;
 
+    this.loadStarImage();
+
+  }
+
+  loadStarImage() {
     this.starImage.onload = (e) => {
       this.spriteWidth = this.starImage.width;
       this.spriteHeight = this.starImage.height
       this.singleSpriteHeight = this.spriteHeight / this.numOfRows;
-
-      setInterval(() => {
-        this.index = ++this.index % this.numOfRows;
-        if (this.bouncingUp) {
-          this.dy += 0.3;
-          this.bouncingUp = (this.dy > 6) ? false : true;
-        }
-        if (!this.bouncingUp) {
-          this.dy -= 0.3;
-          this.bouncingUp = (this.dy <= 0) ? true : false;
-        }
-      }, 45);
+      this.animateStar();
     }
+  }
 
+  animateStar() {
+    setInterval(() => {
+      this.index = ++this.index % this.numOfRows;
+      if (this.bouncingUp) {
+        this.dy += 0.3;
+        this.bouncingUp = (this.dy > 6) ? false : true;
+      }
+      if (!this.bouncingUp) {
+        this.dy -= 0.3;
+        this.bouncingUp = (this.dy <= 0) ? true : false;
+      }
+    }, 45);
   }
 
   draw() {

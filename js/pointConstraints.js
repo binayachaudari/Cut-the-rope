@@ -33,11 +33,12 @@ class PointConstraint {
     this.pointB.updateBoundings();
   }
 
-  render(ctx) {
+  render() {
     if (!this.hidden) {
       ctx.beginPath();
       ctx.moveTo(this.pointA.position.x, this.pointA.position.y);
       ctx.lineTo(this.pointB.position.x, this.pointB.position.y);
+      ctx.strokeStyle = 'rgba(88,56,34,1)';
       ctx.lineWidth = 5;
       ctx.lineCap = 'round';
       ctx.stroke();
