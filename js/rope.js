@@ -5,6 +5,7 @@ class Rope {
     this.position = position;
     this.ropePoints = ropePoints;
     this.lineSegmentLength = lineSegmentLength;
+    this.isAlreadyCut = false;
 
     for (let eachRopePoint = 0; eachRopePoint < ropePoints; eachRopePoint++) {
       this.points.push(new Point(
@@ -42,10 +43,13 @@ class Rope {
       point.updateFriction();
     }
   }
-  updateGravity() {
-    for (let point of this.points) {
-      point.setGravity(new Vec2(0, 1));
-    }
+  updateGravity(point) {
+    // this.points.forEach((point, index) => {
+    //   let gravity = 0.1
+    //   point.setGravity(new Vec2(0, index * gravity));
+    // });
+    point.setGravity(new Vec2(0, 5));
+
   }
   updateConstraints() {
     for (let constraint of this.constraints) {
@@ -53,17 +57,20 @@ class Rope {
     }
   }
   checkRopesIntersection(mousePositionX, mousePositionY) {
-    for (let constraint of this.constraints) {
-      let lengthOfLine = constraint.pointA.position.vecTo(constraint.pointB.position).len();
-      let distanceFromPointA = new Vec2(mousePositionX, mousePositionY).vecTo(constraint.pointA.position).len(),
-        distanceFromPointB = new Vec2(mousePositionX, mousePositionY).vecTo(constraint.pointB.position).len();
+    if (!this.isAlreadyCut) {
+      for (let constraint of this.constraints) {
+        let lengthOfLine = constraint.pointA.position.vecTo(constraint.pointB.position).len();
+        let distanceFromPointA = new Vec2(mousePositionX, mousePositionY).vecTo(constraint.pointA.position).len(),
+          distanceFromPointB = new Vec2(mousePositionX, mousePositionY).vecTo(constraint.pointB.position).len();
 
-      if (distanceFromPointA + distanceFromPointB >= lengthOfLine - 2.5 &&
-        distanceFromPointA + distanceFromPointB <= lengthOfLine + 2.5) {
-        if (this.constraints.indexOf(constraint) != 0) {
-          this.removeConstraint(this.constraints.indexOf(constraint));
-          this.removePoints(this.points.indexOf(constraint.pointA), this.points.indexOf(constraint.pointB));
-          this.updateGravity();
+        if (distanceFromPointA + distanceFromPointB >= lengthOfLine - 2.5 &&
+          distanceFromPointA + distanceFromPointB <= lengthOfLine + 2.5) {
+          if (this.constraints.indexOf(constraint) != 0) {
+            this.isAlreadyCut = true;
+            this.removeConstraint(this.constraints.indexOf(constraint));
+            this.removePoints(this.points.indexOf(constraint.pointA), this.points.indexOf(constraint.pointB));
+            this.updateGravity(constraint.pointB);
+          }
         }
       }
     }
@@ -75,7 +82,7 @@ class Rope {
     this.points.splice(pointA, 1);
     this.points.splice(pointB, 1);
   }
-  render(ctx) {
+  render() {
     for (let constraint of this.constraints) {
       constraint.render();
     }

@@ -2,6 +2,7 @@ const CANVAS_WIDTH = 940,
   CANVAS_HEIGHT = window.innerHeight;
 
 const nailImageWidth = NailImageHeight = 12.5;
+const FrogPositionBottomOffset = 120;
 
 
 document.body.style.margin = "0px";
@@ -42,6 +43,9 @@ let stars = [star1, star2, star3];
 
 let candy = new Candy(rope.getRopeEnd());
 
+let frog = new Frog(new Vec2(CANVAS_WIDTH / 2, CANVAS_HEIGHT - FrogPositionBottomOffset));
+
+
 
 function updateAll() {
   rope.updatePoints();
@@ -52,7 +56,9 @@ function updateAll() {
   for (star of stars) {
     star.update();
   }
+  frog.update();
   candy.update();
+
 }
 
 let drawAll = () => {
