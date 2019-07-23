@@ -7,7 +7,6 @@ class PointConstraint {
   }
   setLength(value) {
     this.length = value;
-    return this;
   }
 
   applyConstraint() {

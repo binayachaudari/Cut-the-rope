@@ -28,14 +28,23 @@ class Rope {
   getRopeEnd() {
     return this.points[this.points.length - 1];
   }
+
+  getConstraintEnd() {
+    return this.constraints[this.constraints.length - 1];
+  }
+
   attach(point) {
-    this.constraints.push(new PointConstraint(this.getRopeEnd(), point).setLength(this.lineSegmentLength));
+    this.constraints.push(new PointConstraint(this.getRopeEnd(), point));
+    this.getConstraintEnd().setLength(this.lineSegmentLength);
+
   }
 
   updatePoints() {
-    this.points[0].position = this.position;
-    for (let point of this.points) {
-      point.update();
+    if (this.points.length != 0) {
+      this.points[0].position = this.position;
+      for (let point of this.points) {
+        point.update();
+      }
     }
   }
   updateFriction() {
@@ -49,6 +58,8 @@ class Rope {
     //   point.setGravity(new Vec2(0, index * gravity));
     // });
     point.setGravity(new Vec2(0, 5));
+    // this.points = [];
+    // this.constraints = [];
 
   }
   updateConstraints() {
@@ -56,6 +67,7 @@ class Rope {
       constraint.update();
     }
   }
+
   checkRopesIntersection(mousePositionX, mousePositionY) {
     if (!this.isAlreadyCut) {
       for (let constraint of this.constraints) {
@@ -83,8 +95,10 @@ class Rope {
     this.points.splice(pointB, 1);
   }
   render() {
-    for (let constraint of this.constraints) {
-      constraint.render();
+    if (this.constraints.length != 0) {
+      for (let constraint of this.constraints) {
+        constraint.render();
+      }
     }
   }
 }

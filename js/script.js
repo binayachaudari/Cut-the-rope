@@ -2,7 +2,7 @@ const CANVAS_WIDTH = 940,
   CANVAS_HEIGHT = window.innerHeight;
 
 const nailImageWidth = NailImageHeight = 12.5;
-const FrogPositionBottomOffset = 120;
+const FrogPositionBottomOffset = 100;
 
 
 document.body.style.margin = "0px";
@@ -33,15 +33,17 @@ let generateRandomNumber = (min, max) => {
 let background = new Background(new Vec2(0, 0));
 let nail = new Nail(new Vec2(CANVAS_WIDTH / 2 - nailImageWidth, 50));
 
-let rope = new Rope(new Vec2(CANVAS_WIDTH / 2, 50 + NailImageHeight), 15, 10);
+let rope = new Rope(new Vec2(CANVAS_WIDTH / 2, 50 + NailImageHeight), 21, 10);
 
-let star1 = new Star(new Vec2(CANVAS_WIDTH / 2, 305), 0),
-  star2 = new Star(new Vec2(CANVAS_WIDTH / 2, 375), 6),
-  star3 = new Star(new Vec2(CANVAS_WIDTH / 2, 455), 12);
+
+let star1 = new Star(new Vec2(CANVAS_WIDTH / 2, 325), 0),
+  star2 = new Star(new Vec2(CANVAS_WIDTH / 2, 395), 6),
+  star3 = new Star(new Vec2(CANVAS_WIDTH / 2, 475), 12);
 
 let stars = [star1, star2, star3];
 
 let candy = new Candy(rope.getRopeEnd());
+
 
 let frog = new Frog(new Vec2(CANVAS_WIDTH / 2, CANVAS_HEIGHT - FrogPositionBottomOffset));
 
@@ -49,14 +51,16 @@ let frog = new Frog(new Vec2(CANVAS_WIDTH / 2, CANVAS_HEIGHT - FrogPositionBotto
 
 function updateAll() {
   rope.updatePoints();
+
   for (var rigidConstraint = 0; rigidConstraint < 5; rigidConstraint++) //more loops = more precision, but worse performance
   {
     rope.updateConstraints();
+
   }
   for (star of stars) {
     star.update();
+    starCollisionDetection(star);
   }
-  frog.update();
   candy.update();
 
 }
@@ -66,6 +70,7 @@ let drawAll = () => {
   background.draw();
   nail.draw();
   rope.render();
+  frog.drawFrogImage();
 
 }
 
@@ -80,6 +85,21 @@ let gameLoop = () => {
 
 document.body.onload = (e) => {
   gameLoop();
+}
+
+let starCollisionDetection = (star) => {
+  if (candy.endPoint.position.x < star.position.x + star.spriteWidth &&
+    candy.endPoint.position.x + candy.candyImageWidth / 2 > star.position.x &&
+    candy.endPoint.position.y < star.position.y + star.singleSpriteHeight &&
+    candy.endPoint.position.y + candy.candyImageHeight / 2 > star.position.y) {
+    console.log('collisionDetection');
+  }
+}
+
+let calculateDistance = (pointAX, pointAY, pointBX, pointBY) => {
+  let dx = pointAX - pointBX;
+  let dy = pointAY - pointBY;
+  return Math.sqrt(dx * dx + dy * dy);
 }
 
 
@@ -101,4 +121,6 @@ document.body.onload = (e) => {
 
 canvas.addEventListener('click', (e) => {
   rope.checkRopesIntersection(e.layerX, e.layerY);
+
+  frog.setFrogStatus('sad');
 })

@@ -4,6 +4,7 @@ class Candy {
     this.candyImage = new Image();
     this.candyImage.src = './images/candy.png';
     this.candyImageWidth = this.candyImageHeight = 100;
+    this.radius = 25;
   }
 
 
@@ -16,7 +17,7 @@ class Candy {
   draw() {
     ctx.save();
     ctx.beginPath();
-    ctx.arc(this.x, this.y, 25, 0, Math.PI * 2);
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     ctx.closePath();
     ctx.clip();
 
