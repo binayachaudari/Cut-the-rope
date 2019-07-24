@@ -3,6 +3,8 @@ const CANVAS_WIDTH = 940,
 
 const nailImageWidth = NailImageHeight = 12.5;
 const FrogPositionBottomOffset = 100;
+const nearFrogDistance = 30,
+  frogEatDistance = 20;
 
 
 document.body.style.margin = "0px";
@@ -45,7 +47,7 @@ let stars = [star1, star2, star3];
 let candy = new Candy(rope.getRopeEnd());
 
 let frog = new Frog(new Vec2(CANVAS_WIDTH / 2, CANVAS_HEIGHT - FrogPositionBottomOffset));
-
+let isCandyNearFrog = false, isMouthOpen = false, hasEaten = false;
 
 
 function updateAll() {
@@ -54,13 +56,13 @@ function updateAll() {
   for (var rigidConstraint = 0; rigidConstraint < 5; rigidConstraint++) //more loops = more precision, but worse performance
   {
     rope.updateConstraints();
-
   }
   for (star of stars) {
     star.update();
     starCollisionDetection(star);
     star.drawDisappearStar();
   }
+  candyNearFrogDetection();
   candy.update();
 
 }
@@ -100,6 +102,41 @@ let getIndexOfStar = (star) => {
   return stars.indexOf(star);
 }
 
+let candyNearFrogDetection = () => {
+  if (!isCandyNearFrog) {
+    if (candy.endPoint.position.x < frog.position.x + frog.spriteWidth &&
+      candy.endPoint.position.x + candy.candyImageWidth / 2 > frog.position.x - nearFrogDistance &&
+      candy.endPoint.position.y < frog.position.y + frog.singleSpriteHeight &&
+      candy.endPoint.position.y + candy.candyImageHeight / 2 > frog.position.y - nearFrogDistance) {
+      isCandyNearFrog = true;
+      frog.setFrogStatus('mouthopen');
+      isMouthOpen = true;
+    }
+  }
+  if (isMouthOpen) {
+    if (!(candy.endPoint.position.x < frog.position.x + frog.spriteWidth &&
+      candy.endPoint.position.x + candy.candyImageWidth / 2 > frog.position.x - nearFrogDistance &&
+      candy.endPoint.position.y < frog.position.y + frog.singleSpriteHeight &&
+      candy.endPoint.position.y + candy.candyImageHeight / 2 > frog.position.y - nearFrogDistance)) {
+      isCandyNearFrog = false;
+      frog.setFrogStatus('mouthclose');
+      isMouthOpen = false;
+    }
+  }
+  if (!hasEaten) {
+    if (candy.endPoint.position.x < frog.position.x + frog.spriteWidth - frogEatDistance &&
+      candy.endPoint.position.x + candy.candyImageWidth / 2 > frog.position.x - frogEatDistance &&
+      candy.endPoint.position.y < frog.position.y + frog.singleSpriteHeight &&
+      candy.endPoint.position.y + candy.candyImageHeight / 2 > frog.position.y + frogEatDistance) {
+      hasEaten = true;
+      frog.setFrogStatus('chew');
+      candy.hasEaten = true;
+      isMouthOpen = false;
+    }
+  }
+
+}
+
 // //Mousemove functions.
 // canvas.addEventListener('mousemove', function (evt) {
 //   mousePos = getMousePos(canvas, evt);
@@ -117,5 +154,4 @@ let getIndexOfStar = (star) => {
 
 canvas.addEventListener('click', (e) => {
   rope.checkRopesIntersection(e.layerX, e.layerY);
-  frog.setFrogStatus('sad');
 })

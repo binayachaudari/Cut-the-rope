@@ -74,7 +74,6 @@ class Frog {
       case 'mouthclose':
         this.image = this.frogMouthClose;
         this.loadFrogMouthImage();
-        this.animateFrogPartial();
 
         setTimeout(() => {
           clearInterval(this.partialFrogAnimation);

@@ -5,6 +5,7 @@ class Candy {
     this.candyImage.src = './images/candy.png';
     this.candyImageWidth = this.candyImageHeight = 100;
     this.radius = 25;
+    this.hasEaten = false;
   }
 
 
@@ -15,16 +16,17 @@ class Candy {
   }
 
   draw() {
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    ctx.closePath();
-    ctx.clip();
+    if (!this.hasEaten) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.closePath();
+      ctx.clip();
 
-    ctx.drawImage(this.candyImage, this.x - this.candyImageWidth / 4,
-      this.y - this.candyImageHeight / 4, this.candyImageWidth / 2, this.candyImageHeight / 2);
+      ctx.drawImage(this.candyImage, this.x - this.candyImageWidth / 4,
+        this.y - this.candyImageHeight / 4, this.candyImageWidth / 2, this.candyImageHeight / 2);
 
-    ctx.restore();
+      ctx.restore();
+    }
   }
-
 }

@@ -9,6 +9,7 @@ class Star {
     this.starDisappearImage.src = './images/starDisappear.png';
     this.index = index;
     this.hasDisappeared = false;
+    this.hasAnimated = false;
     this.bouncingUp = true;
     this.dy = 0;
     this.numOfRows = 18;
@@ -55,6 +56,7 @@ class Star {
       this.starAnimationIndex++;
       if (this.starAnimationIndex > this.starAnimationNumOfRows) {
         this.starAnimationIndex = this.starAnimationNumOfRows - 1;
+        this.hasAnimated = true;
       }
     }, this.animationTime);
   }
@@ -64,12 +66,14 @@ class Star {
   }
 
   drawDisappearStar() {
-    ctx.beginPath();
-    ctx.drawImage(this.starDisappearImage, 0, this.starAnimationIndex * this.starAnimationSingleSpriteHeight,
-      this.starAnimationSpriteWidth, this.starAnimationSingleSpriteHeight, this.position.x - this.starAnimationSpriteWidth / 2,
-      this.position.y - this.starAnimationSingleSpriteHeight / 2 - this.dy,
-      this.starAnimationSpriteWidth, this.starAnimationSingleSpriteHeight);
-    ctx.closePath();
+    if (!this.hasAnimated) {
+      ctx.beginPath();
+      ctx.drawImage(this.starDisappearImage, 0, this.starAnimationIndex * this.starAnimationSingleSpriteHeight,
+        this.starAnimationSpriteWidth, this.starAnimationSingleSpriteHeight, this.position.x - this.starAnimationSpriteWidth / 2,
+        this.position.y - this.starAnimationSingleSpriteHeight / 2 - this.dy,
+        this.starAnimationSpriteWidth, this.starAnimationSingleSpriteHeight);
+      ctx.closePath();
+    }
   }
 
   setDisappearStatus(value) {
