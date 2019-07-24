@@ -47,6 +47,7 @@ let stars = [star1, star2, star3];
 let candy = new Candy(rope.getRopeEnd());
 
 let frog = new Frog(new Vec2(CANVAS_WIDTH / 2, CANVAS_HEIGHT - FrogPositionBottomOffset));
+let inGameScore = new StarScore(new Vec2(50, 50));
 let isCandyNearFrog = false, isMouthOpen = false, hasEaten = false;
 
 
@@ -64,7 +65,7 @@ function updateAll() {
   }
   candyNearFrogDetection();
   candy.update();
-
+  inGameScore.updateStarScore();
 }
 
 let drawAll = () => {
@@ -73,7 +74,7 @@ let drawAll = () => {
   nail.draw();
   rope.render();
   frog.drawFrogImage();
-
+  inGameScore.drawGameStarScore('ingame');
 }
 
 let gameLoopFrameRequest;
