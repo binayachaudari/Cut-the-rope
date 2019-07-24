@@ -5,12 +5,17 @@ class Star {
     this.starImage.src = './images/starSprite.png';
     this.starBloom = new Image();
     this.starBloom.src = './images/starBloom.png'
+    this.starDisappearImage = new Image();
+    this.starDisappearImage.src = './images/starDisappear.png';
     this.index = index;
+    this.hasDisappeared = false;
     this.bouncingUp = true;
     this.dy = 0;
     this.numOfRows = 18;
+    this.animationTime = 45;
 
     this.loadStarImage();
+    this.animateStar();
 
   }
 
@@ -19,12 +24,11 @@ class Star {
       this.spriteWidth = this.starImage.width;
       this.spriteHeight = this.starImage.height
       this.singleSpriteHeight = this.spriteHeight / this.numOfRows;
-      this.animateStar();
     }
   }
 
   animateStar() {
-    setInterval(() => {
+    this.starAnimation = setInterval(() => {
       this.index = ++this.index % this.numOfRows;
       if (this.bouncingUp) {
         this.dy += 0.3;
@@ -34,18 +38,55 @@ class Star {
         this.dy -= 0.3;
         this.bouncingUp = (this.dy <= 0) ? true : false;
       }
-    }, 45);
+    }, this.animationTime);
+  }
+
+  starDisappearAnimation() {
+    this.setDisappearStatus(true);
+    this.starAnimationIndex = 0;
+    this.starAnimationNumOfRows = 11;
+    this.starAnimationSpriteWidth = this.starDisappearImage.width;
+    this.starAnimationSpriteHeight = this.starDisappearImage.height;
+    this.starAnimationSingleSpriteHeight = this.starAnimationSpriteHeight / this.starAnimationNumOfRows;
+
+    clearInterval(this.starDisappear);
+
+    this.starDisappear = setInterval(() => {
+      this.starAnimationIndex++;
+      if (this.starAnimationIndex > this.starAnimationNumOfRows) {
+        this.starAnimationIndex = this.starAnimationNumOfRows - 1;
+      }
+    }, this.animationTime);
+  }
+
+  getStarDisappearAnimationTime() {
+    return this.starAnimationNumOfRows * this.animationTime;
+  }
+
+  drawDisappearStar() {
+    ctx.beginPath();
+    ctx.drawImage(this.starDisappearImage, 0, this.starAnimationIndex * this.starAnimationSingleSpriteHeight,
+      this.starAnimationSpriteWidth, this.starAnimationSingleSpriteHeight, this.position.x - this.starAnimationSpriteWidth / 2,
+      this.position.y - this.starAnimationSingleSpriteHeight / 2 - this.dy,
+      this.starAnimationSpriteWidth, this.starAnimationSingleSpriteHeight);
+    ctx.closePath();
+  }
+
+  setDisappearStatus(value) {
+    this.hasDisappeared = value;
   }
 
   draw() {
-    ctx.beginPath();
-    ctx.drawImage(this.starBloom, this.position.x - this.spriteWidth,
-      this.position.y - this.singleSpriteHeight - this.dy);
-    ctx.drawImage(this.starImage, 0, this.index * this.singleSpriteHeight, this.spriteWidth,
-      this.singleSpriteHeight, this.position.x - this.spriteWidth / 2,
-      this.position.y - this.singleSpriteHeight / 2 - this.dy,
-      this.spriteWidth, this.singleSpriteHeight);
-    ctx.closePath();
+    if (!this.hasDisappeared) {
+      ctx.beginPath();
+      ctx.drawImage(this.starBloom, this.position.x - this.spriteWidth,
+        this.position.y - this.singleSpriteHeight - this.dy);
+      ctx.drawImage(this.starImage, 0, this.index * this.singleSpriteHeight, this.spriteWidth,
+        this.singleSpriteHeight, this.position.x - this.spriteWidth / 2,
+        this.position.y - this.singleSpriteHeight / 2 - this.dy,
+        this.spriteWidth, this.singleSpriteHeight);
+      ctx.closePath();
+    }
   }
 
   update() {

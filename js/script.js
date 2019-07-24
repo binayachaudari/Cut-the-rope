@@ -33,7 +33,7 @@ let generateRandomNumber = (min, max) => {
 let background = new Background(new Vec2(0, 0));
 let nail = new Nail(new Vec2(CANVAS_WIDTH / 2 - nailImageWidth, 50));
 
-let rope = new Rope(new Vec2(CANVAS_WIDTH / 2, 50 + NailImageHeight), 21, 10);
+let rope = new Rope(new Vec2(CANVAS_WIDTH / 2, 50 + NailImageHeight), 15, 10);
 
 
 let star1 = new Star(new Vec2(CANVAS_WIDTH / 2, 325), 0),
@@ -43,7 +43,6 @@ let star1 = new Star(new Vec2(CANVAS_WIDTH / 2, 325), 0),
 let stars = [star1, star2, star3];
 
 let candy = new Candy(rope.getRopeEnd());
-
 
 let frog = new Frog(new Vec2(CANVAS_WIDTH / 2, CANVAS_HEIGHT - FrogPositionBottomOffset));
 
@@ -60,6 +59,7 @@ function updateAll() {
   for (star of stars) {
     star.update();
     starCollisionDetection(star);
+    star.drawDisappearStar();
   }
   candy.update();
 
@@ -92,17 +92,13 @@ let starCollisionDetection = (star) => {
     candy.endPoint.position.x + candy.candyImageWidth / 2 > star.position.x &&
     candy.endPoint.position.y < star.position.y + star.singleSpriteHeight &&
     candy.endPoint.position.y + candy.candyImageHeight / 2 > star.position.y) {
-    console.log('collisionDetection');
+    star.starDisappearAnimation();
   }
 }
 
-let calculateDistance = (pointAX, pointAY, pointBX, pointBY) => {
-  let dx = pointAX - pointBX;
-  let dy = pointAY - pointBY;
-  return Math.sqrt(dx * dx + dy * dy);
+let getIndexOfStar = (star) => {
+  return stars.indexOf(star);
 }
-
-
 
 // //Mousemove functions.
 // canvas.addEventListener('mousemove', function (evt) {
@@ -121,6 +117,5 @@ let calculateDistance = (pointAX, pointAY, pointBX, pointBY) => {
 
 canvas.addEventListener('click', (e) => {
   rope.checkRopesIntersection(e.layerX, e.layerY);
-
   frog.setFrogStatus('sad');
 })
