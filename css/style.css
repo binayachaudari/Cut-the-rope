@@ -1,0 +1,10 @@
+@font-face {
+  font-family: 'GooddP';
+  src: url('GOODDP.TTF');
+  font-weight: normal;
+  font-style: normal;
+}
+
+*{
+  font-family: 'GooddP';
+}

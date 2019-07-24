@@ -6,6 +6,8 @@ const FrogPositionBottomOffset = 100;
 const nearFrogDistance = 30,
   frogEatDistance = 20;
 
+const gameOverDelay = 500;
+
 
 document.body.style.margin = "0px";
 document.body.style.padding = "0px";
@@ -47,8 +49,13 @@ let stars = [star1, star2, star3];
 let candy = new Candy(rope.getRopeEnd());
 
 let frog = new Frog(new Vec2(CANVAS_WIDTH / 2, CANVAS_HEIGHT - FrogPositionBottomOffset));
+
 let inGameScore = new StarScore(new Vec2(50, 50));
-let isCandyNearFrog = false, isMouthOpen = false, hasEaten = false;
+
+let gameOver = new GameOver();
+
+let isGameOver = false;
+let isCandyNearFrog = false, isMouthOpen = false, hasEaten = false, isSad = false;
 
 
 function updateAll() {
@@ -66,6 +73,10 @@ function updateAll() {
   candyNearFrogDetection();
   candy.update();
   inGameScore.updateStarScore();
+  if (isGameOver) {
+    // cancelAnimationFrame(gameLoopFrameRequest);
+    gameOver.curtainCloseAnimation();
+  }
 }
 
 let drawAll = () => {
@@ -83,7 +94,6 @@ let gameLoop = () => {
   drawAll();
   updateAll();
 }
-
 
 
 document.body.onload = (e) => {
@@ -133,7 +143,19 @@ let candyNearFrogDetection = () => {
       frog.setFrogStatus('chew');
       candy.hasEaten = true;
       isMouthOpen = false;
+      setTimeout(() => {
+        isGameOver = true;
+      }, frog.numOfRows * frog.animationSpeed - gameOverDelay);
     }
+
+    if (!isSad)
+      if (candy.endPoint.position.y > frog.position.y + frog.singleSpriteHeight / 2) {
+        frog.setFrogStatus('sad');
+        isSad = true;
+        setTimeout(() => {
+          isGameOver = true;
+        }, frog.numOfRows * frog.animationSpeed - gameOverDelay);
+      }
   }
 
 }
