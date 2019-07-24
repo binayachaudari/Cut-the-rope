@@ -47,21 +47,17 @@ class Rope {
       }
     }
   }
+
   updateFriction() {
     for (let point of this.points) {
       point.updateFriction();
     }
   }
-  updateGravity(point) {
-    // this.points.forEach((point, index) => {
-    //   let gravity = 0.1
-    //   point.setGravity(new Vec2(0, index * gravity));
-    // });
-    point.setGravity(new Vec2(0, 5));
-    // this.points = [];
-    // this.constraints = [];
-
+  updateGravity() {
+    let lastPoint = this.points.length - 1;
+    this.points[lastPoint].setGravity(new Vec2(0, 8));
   }
+
   updateConstraints() {
     for (let constraint of this.constraints) {
       constraint.update();
@@ -77,12 +73,12 @@ class Rope {
 
         if (distanceFromPointA + distanceFromPointB >= lengthOfLine - 2.5 &&
           distanceFromPointA + distanceFromPointB <= lengthOfLine + 2.5) {
-          if (this.constraints.indexOf(constraint) != 0) {
+          if (this.constraints.indexOf(constraint) != 0 && this.constraints.indexOf(constraint) != this.constraints.length - 1) {
             this.isAlreadyCut = true;
             this.removeConstraint(this.constraints.indexOf(constraint));
             this.removePoints(this.points.indexOf(constraint.pointA), this.points.indexOf(constraint.pointB));
             this.updateConstraintsOpacity();
-            this.updateGravity(constraint.pointB);
+            this.updateGravity();
           }
         }
       }

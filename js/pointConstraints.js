@@ -38,11 +38,14 @@ class PointConstraint {
       if (this.opacity >= 0) {
         this.opacity -= 0.08;
       }
+      if (!this.opacity) {
+        clearInterval(this.ropeOpacityUpdate);
+      }
     }, 60);
   }
 
   render() {
-    if (!this.hidden) {
+    if (!this.hidden && this.opacity) {
       ctx.beginPath();
       ctx.moveTo(this.pointA.position.x, this.pointA.position.y);
       ctx.lineTo(this.pointB.position.x, this.pointB.position.y);
