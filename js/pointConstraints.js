@@ -4,6 +4,7 @@ class PointConstraint {
     this.length = pointA.position.vecTo(pointB.position).len();
     this.pointA = pointA;
     this.pointB = pointB;
+    this.opacity = 1;
   }
   setLength(value) {
     this.length = value;
@@ -32,12 +33,20 @@ class PointConstraint {
     this.pointB.updateBoundings();
   }
 
+  updateOpacity() {
+    this.ropeOpacityUpdate = setInterval(() => {
+      if (this.opacity >= 0) {
+        this.opacity -= 0.08;
+      }
+    }, 60);
+  }
+
   render() {
     if (!this.hidden) {
       ctx.beginPath();
       ctx.moveTo(this.pointA.position.x, this.pointA.position.y);
       ctx.lineTo(this.pointB.position.x, this.pointB.position.y);
-      ctx.strokeStyle = 'rgba(88,56,34,1)';
+      ctx.strokeStyle = `rgba(88,56,34,${this.opacity})`;
       ctx.lineWidth = 5;
       ctx.lineCap = 'round';
       ctx.stroke();

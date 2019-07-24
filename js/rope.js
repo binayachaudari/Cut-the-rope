@@ -81,19 +81,29 @@ class Rope {
             this.isAlreadyCut = true;
             this.removeConstraint(this.constraints.indexOf(constraint));
             this.removePoints(this.points.indexOf(constraint.pointA), this.points.indexOf(constraint.pointB));
+            this.updateConstraintsOpacity();
             this.updateGravity(constraint.pointB);
           }
         }
       }
     }
   }
+
   removeConstraint(index) {
     this.constraints.splice(index, 1);
   }
+
   removePoints(pointA, pointB) {
     this.points.splice(pointA, 1);
     this.points.splice(pointB, 1);
   }
+
+  updateConstraintsOpacity() {
+    for (let constraint of this.constraints) {
+      constraint.updateOpacity();
+    }
+  }
+
   render() {
     if (this.constraints.length != 0) {
       for (let constraint of this.constraints) {
