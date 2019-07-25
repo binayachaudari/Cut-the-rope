@@ -84,7 +84,7 @@ class Game {
   }
 
   gameLoop() {
-    requestAnimationFrame(this.gameLoop.bind(this));
+    this.animationFrame = requestAnimationFrame(this.gameLoop.bind(this));
     this.drawAll();
     this.updateAll();
   }
