@@ -108,6 +108,7 @@ class GameOver {
         e.layerX <= CANVAS_WIDTH / 3 + this.buttonWidth / 2 &&
         e.layerY >= CANVAS_HEIGHT / 2 + this.buttonOffsetFromCentre &&
         e.layerY <= CANVAS_HEIGHT / 2 + this.buttonOffsetFromCentre + this.buttonHeight) {
+        // newGame = new Game(level1);
         location.reload();
       }
     })
