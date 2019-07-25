@@ -51,8 +51,8 @@ class GameOver {
     this.drawCurtain();
     if (this.isCurtainClosed) {
       this.displayScoreBoard();
-      inGameScore.loadGameOverScore();
-      inGameScore.drawGameStarScore('gameover');
+      newGame.inGameScore.loadGameOverScore();
+      newGame.inGameScore.drawGameStarScore('gameover');
     }
   }
 
@@ -67,7 +67,7 @@ class GameOver {
     ctx.textAlign = "center";
     ctx.strokeStyle = 'black';
     ctx.lineWidth = 5;
-    switch (inGameScore.getStarScore()) {
+    switch (newGame.inGameScore.getStarScore()) {
       case 1:
         this.scoreText = 'Good!';
         break;

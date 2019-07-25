@@ -1,7 +1,8 @@
 class StarScore {
-  constructor(position) {
+  constructor(position, stars) {
     this.position = position;
     this.result = [];
+    this.stars = stars;
     this.ingamestarScoreImage = new Image();
     this.ingamestarScoreImage.src = './images/inGameScore.png';
     this.gameoverScoreImage = new Image();
@@ -28,7 +29,7 @@ class StarScore {
   }
 
   getStarScore() {
-    this.result = stars.filter((star) => {
+    this.result = this.stars.filter((star) => {
       return star.hasDisappeared === true;
     });
     return this.result.length;
