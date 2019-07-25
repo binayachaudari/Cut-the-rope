@@ -7,7 +7,18 @@ class GameOver {
     this.dy = 0;
     this.isCurtainClosed = false;
 
+    this.loadCutTheRopeFont();
     this.loadImages();
+  }
+
+  loadCutTheRopeFont() {
+    let font = new FontFace('GooddP', 'url(./fonts/GOODDP.TTF)');
+    font.load().then((loaded_face) => {
+      document.fonts.add(loaded_face);
+      document.body.style.fontFamily = '"GooddP", Arial';
+    }).catch(function (error) {
+      // error occurred
+    });
   }
 
   loadImages() {
