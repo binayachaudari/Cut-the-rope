@@ -1,8 +1,6 @@
 let newGame;
 let background = new Background(new Vec2(0, 0))
 
-let backgroundSound = new Audio('./sounds/main.mp3');
-
 let level1 = {
   background: background,
   nails: [new Nail(new Vec2(CANVAS_WIDTH / 2 - nailImageWidth, 50))],
@@ -56,7 +54,7 @@ document.body.onload = (e) => {
 // //Mousemove functions.
 // canvas.addEventListener('mousemove', function (evt) {
 //   mousePos = getMousePos(canvas, evt);
-//   rope.position = new Vec2(mousePos.x, mousePos.y);
+//   level1.ropes[0].position = new Vec2(mousePos.x, mousePos.y);
 // }, false);
 
 // function getMousePos(canvas, evt) {

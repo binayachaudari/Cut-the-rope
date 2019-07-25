@@ -58,11 +58,13 @@ class Frog {
       case 'sad':
         this.image = this.frogSad;
         this.loadFrogSadImage();
+        sadSound.play();
         break;
 
       case 'chew':
         this.image = this.frogChew;
         this.loadFrogChewImage();
+        eatSound.play();
         break;
 
       case 'mouthopen':

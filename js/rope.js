@@ -78,6 +78,7 @@ class Rope {
             this.removeConstraint(this.constraints.indexOf(constraint));
             this.removeConstraint(this.constraints.length - 2);
             this.removePoints(this.points.indexOf(constraint.pointA), this.points.indexOf(constraint.pointB));
+            ropeCutSound.play();
             this.updateConstraintsOpacity();
             // this.updateGravity();
           }
