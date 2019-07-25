@@ -1,6 +1,7 @@
 let newGame;
 
 let level1 = {
+  background: new Background(new Vec2(0, 0)),
   nails: [new Nail(new Vec2(CANVAS_WIDTH / 2 - nailImageWidth, 50))],
   ropes: [
     new Rope(new Vec2(CANVAS_WIDTH / 2, 50 + NailImageHeight), 15, 10)
@@ -14,6 +15,8 @@ let level1 = {
 
   frog: new Frog(new Vec2(CANVAS_WIDTH / 2, CANVAS_HEIGHT - FrogPositionBottomOffset)),
 }
+level1.candy = new Candy(level1.ropes[0].getRopeEnd());
+level1.inGameScore = new StarScore(new Vec2(50, 50), level1.stars);
 
 document.body.onload = (e) => {
   newGame = new Game(level1);

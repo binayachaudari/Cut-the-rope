@@ -1,12 +1,12 @@
 class Game {
   constructor(level) {
-    this.background = new Background(new Vec2(0, 0));
+    this.background = level.background;
     this.nails = level.nails;
     this.ropes = level.ropes;
     this.stars = level.stars;
-    this.candy = new Candy(this.ropes[0].getRopeEnd());
+    this.candy = level.candy;
     this.frog = level.frog;
-    this.inGameScore = new StarScore(new Vec2(50, 50), this.stars);
+    this.inGameScore = level.inGameScore;
     this.gameOver = new GameOver();
 
     this.isGameOver = false;
@@ -14,6 +14,8 @@ class Game {
     this.isMouthOpen = false;
     this.hasEaten = false;
     this.isSad = false;
+
+    this.isCutting = false;
 
     this.attachRopes();
     this.ropeCutEvenetListener();
@@ -31,9 +33,17 @@ class Game {
   }
 
   ropeCutEvenetListener() {
-    canvas.addEventListener('click', (e) => {
-      for (let rope of this.ropes) {
-        rope.checkRopesIntersection(e.layerX, e.layerY);
+    canvas.addEventListener('mousedown', (e) => {
+      this.isCutting = true;
+    })
+    canvas.addEventListener('mouseup', (e) => {
+      this.isCutting = false;
+    })
+    canvas.addEventListener('mousemove', (e) => {
+      if (this.isCutting) {
+        for (let rope of this.ropes) {
+          rope.checkRopesIntersection(e.layerX, e.layerY);
+        }
       }
     })
   }
