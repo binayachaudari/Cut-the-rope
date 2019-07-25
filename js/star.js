@@ -11,6 +11,7 @@ class Star {
     this.hasDisappeared = false;
     this.hasAnimated = false;
     this.bouncingUp = true;
+    this.isDisappearing = false;
     this.dy = 0;
     this.numOfRows = 18;
     this.animationTime = 45;
@@ -50,15 +51,17 @@ class Star {
     this.starAnimationSpriteHeight = this.starDisappearImage.height;
     this.starAnimationSingleSpriteHeight = this.starAnimationSpriteHeight / this.starAnimationNumOfRows;
 
-    clearInterval(this.starDisappear);
-
-    this.starDisappear = setInterval(() => {
-      this.starAnimationIndex++;
-      if (this.starAnimationIndex > this.starAnimationNumOfRows) {
-        this.starAnimationIndex = this.starAnimationNumOfRows - 1;
-        this.hasAnimated = true;
-      }
-    }, this.animationTime);
+    if (!this.isDisappearing) {
+      this.isDisappearing = true;
+      this.starDisappear = setInterval(() => {
+        this.starAnimationIndex++;
+        if (this.starAnimationIndex > this.starAnimationNumOfRows) {
+          this.starAnimationIndex = this.starAnimationNumOfRows - 1;
+          this.hasAnimated = true;
+          clearInterval(this.starDisappear);
+        }
+      }, this.animationTime);
+    }
   }
 
   getStarDisappearAnimationTime() {

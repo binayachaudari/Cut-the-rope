@@ -1,7 +1,7 @@
 class Game {
   constructor(level) {
     this.background = new Background(new Vec2(0, 0));
-    this.nail = level.nail;
+    this.nails = level.nails;
     this.ropes = level.ropes;
     this.stars = level.stars;
     this.candy = new Candy(this.ropes[0].getRopeEnd());
@@ -15,8 +15,19 @@ class Game {
     this.hasEaten = false;
     this.isSad = false;
 
+    this.attachRopes();
     this.ropeCutEvenetListener();
     this.gameLoop();
+  }
+
+  attachRopes() {
+    if (this.ropes.length > 1) {
+      this.ropes.forEach((rope, index) => {
+        if (index > 0) {
+          rope.attach(this.ropes[0].getRopeEnd())
+        }
+      })
+    }
   }
 
   ropeCutEvenetListener() {
@@ -52,7 +63,9 @@ class Game {
   drawAll() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     this.background.draw();
-    this.nail.draw();
+    for (let nail of this.nails) {
+      nail.draw();
+    }
     for (let rope of this.ropes) {
       rope.render();
     }

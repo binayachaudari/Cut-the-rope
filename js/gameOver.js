@@ -79,7 +79,7 @@ class GameOver {
         break;
 
       default:
-        this.scoreText = 'GOOD!'
+        this.scoreText = 'Sad'
         break;
     }
     ctx.strokeText(`${this.scoreText}`, CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2 - 150);

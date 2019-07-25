@@ -1,9 +1,9 @@
 let newGame;
 
 let level1 = {
-  nail: new Nail(new Vec2(CANVAS_WIDTH / 2 - nailImageWidth, 50)),
+  nails: [new Nail(new Vec2(CANVAS_WIDTH / 2 - nailImageWidth, 50))],
   ropes: [
-    new Rope(new Vec2(CANVAS_WIDTH / 2, 50 + NailImageHeight), 15, 10),
+    new Rope(new Vec2(CANVAS_WIDTH / 2, 50 + NailImageHeight), 15, 10)
   ],
 
   stars: [

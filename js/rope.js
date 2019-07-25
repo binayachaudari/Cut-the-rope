@@ -70,15 +70,16 @@ class Rope {
         let lengthOfLine = constraint.pointA.position.vecTo(constraint.pointB.position).len();
         let distanceFromPointA = new Vec2(mousePositionX, mousePositionY).vecTo(constraint.pointA.position).len(),
           distanceFromPointB = new Vec2(mousePositionX, mousePositionY).vecTo(constraint.pointB.position).len();
-
         if (distanceFromPointA + distanceFromPointB >= lengthOfLine - 2.5 &&
           distanceFromPointA + distanceFromPointB <= lengthOfLine + 2.5) {
-          if (this.constraints.indexOf(constraint) != 0 && this.constraints.indexOf(constraint) != this.constraints.length - 1) {
+          if (this.constraints.indexOf(constraint) != 0 && this.constraints.indexOf(constraint) != this.constraints.length - 2
+            && this.constraints.indexOf(constraint) != this.constraints.length - 3) {
             this.isAlreadyCut = true;
             this.removeConstraint(this.constraints.indexOf(constraint));
+            this.removeConstraint(this.constraints.length - 2);
             this.removePoints(this.points.indexOf(constraint.pointA), this.points.indexOf(constraint.pointB));
             this.updateConstraintsOpacity();
-            this.updateGravity();
+            // this.updateGravity();
           }
         }
       }
