@@ -107,9 +107,17 @@ class GameOver {
       if (e.layerX >= CANVAS_WIDTH / 3 - this.buttonWidth / 2 &&
         e.layerX <= CANVAS_WIDTH / 3 + this.buttonWidth / 2 &&
         e.layerY >= CANVAS_HEIGHT / 2 + this.buttonOffsetFromCentre &&
-        e.layerY <= CANVAS_HEIGHT / 2 + this.buttonOffsetFromCentre + this.buttonHeight) {
+        e.layerY <= CANVAS_HEIGHT / 2 + this.buttonOffsetFromCentre + this.buttonHeight && newGame.isGameOver) {
+        init();
         // newGame = new Game(level1);
         location.reload();
+      }
+      if (e.layerX >= (CANVAS_WIDTH / 3) * 2 - this.buttonWidth / 2 &&
+        e.layerX <= (CANVAS_WIDTH / 3) * 2 + this.buttonWidth / 2 &&
+        e.layerY >= CANVAS_HEIGHT / 2 + this.buttonOffsetFromCentre &&
+        e.layerY <= CANVAS_HEIGHT / 2 + this.buttonOffsetFromCentre + this.buttonHeight) {
+        init();
+        newGame = new Game(level2);
       }
     })
   }

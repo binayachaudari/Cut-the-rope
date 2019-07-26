@@ -9,6 +9,7 @@ class StarScore {
     this.gameoverScoreImage.src = './images/gameOverStarScore.png';
     this.loadStarScore();
     this.index = this.getStarScore();
+
     this.spritePadding = 15;
   }
 
